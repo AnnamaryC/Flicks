@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.anitac.flicks.models.Config;
+import com.example.anitac.flicks.models.GlideApp;
 import com.example.anitac.flicks.models.MovieData;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by anitac on 6/27/18.
@@ -19,16 +23,27 @@ import java.util.ArrayList;
 public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ViewHolder>{
     //list of movies
     ArrayList<MovieData> movies;
+    Context context; //context for rendering images
+    Config config; //configuration to get image url
 
     public movieAdapter(ArrayList<MovieData> movies) {
+
         this.movies = movies;
+    }
+
+    public Config getConfig() {
+        return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
     }
 
     //creates and inflates new view
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //get context and creater inflater
-        Context context =  parent.getContext();
+        context =  parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         //creater view
@@ -45,6 +60,19 @@ public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ViewHolder>{
 
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
+
+        //build url
+        String imageURL = config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+
+        //load image using glide (external library)
+        GlideApp.with(context)
+                .load(imageURL)
+                .placeholder(R.drawable.flicks_movie_placeholder)
+                .transform(new RoundedCornersTransformation(25, 0))
+                .error(R.drawable.flicks_movie_placeholder)
+                .into(holder.ivPosterImage);
+
+
     }
 
     //return size of entire data set

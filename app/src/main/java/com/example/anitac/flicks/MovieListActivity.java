@@ -2,10 +2,12 @@ package com.example.anitac.flicks;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.anitac.flicks.models.Config;
 import com.example.anitac.flicks.models.MovieData;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -30,15 +32,14 @@ public class MovieListActivity extends AppCompatActivity {
 
     //intance field
     AsyncHttpClient client;
-    String imageBaseUrl; //showing images
-    String posterSize; //fetch poster size
+
     ArrayList<MovieData> movies;  //list of currently playing movies
     RecyclerView rvMovies; //recycler view
     movieAdapter adapter;
 
+    //image configuration
+    Config config;
 
-
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,13 @@ public class MovieListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_list);
         client = new AsyncHttpClient(); //created every time we want to make an api call
         movies =  new ArrayList<>();
+
+        adapter = new movieAdapter(movies);
+
+        //wire to adapter
+        rvMovies = (RecyclerView) findViewById(R.id.MovieList);
+        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        rvMovies.setAdapter(adapter);
 
         //get the configuration
         GetConfiguration();
@@ -72,6 +80,8 @@ public class MovieListActivity extends AppCompatActivity {
 
                         MovieData movie = new MovieData(results.getJSONObject(i));
                         movies.add(movie);
+                        //notify
+                        adapter.notifyItemInserted(movies.size() - 1 );
                     }
 
                     Log.i(TAG, String.format("Loaded %s movies", results.length()));
@@ -101,16 +111,13 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    JSONObject images = response.getJSONObject("images");
+                    config = new Config(response);
 
-                    //get image base url
-                    imageBaseUrl = images.getString("secure_base_url");
+                    Log.i(TAG, String.format("Loaded configuration with imageBaseUrl %s and posterSize %s", config.getImageBaseUrl(), config.getPosterSize()));
 
-                    //get poster size
-                    JSONArray posterSizeOptions = images.getJSONArray("poster_sizes")  ;
-                    posterSize = posterSizeOptions.optString(3, "w342")  ;
+                    //pass configuration to adapter
+                    adapter.setConfig(config);
 
-                    Log.i(TAG, String.format("Loaded configuration with imageBaseUrl %s and posterSize %s", imageBaseUrl, posterSize));
                 } catch (JSONException e) {
                     LogError("Fail parsing configuration.", e ,true);
                 }
