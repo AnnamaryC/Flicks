@@ -1,6 +1,7 @@
 package com.example.anitac.flicks;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,12 +63,29 @@ public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ViewHolder>{
         holder.tvOverview.setText(movie.getOverview());
 
         //build url
-        String imageURL = config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+        //String imageURL = config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+
+
+        String imageURL= config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+        int orientation = context.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            imageURL = config.getImageURL(config.getPosterSize(),movie.getPosterPath());
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            imageURL = config.getImageURL(config.getBackdropSize(), movie.getBackdropPath());
+        }
+
+        int placeholder= R.drawable.flicks_movie_placeholder;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            placeholder = R.drawable.flicks_movie_placeholder;
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            placeholder = R.drawable.flicks_backdrop_placeholder;
+        }
+
 
         //load image using glide (external library)
         GlideApp.with(context)
                 .load(imageURL)
-                .placeholder(R.drawable.flicks_movie_placeholder)
+                .placeholder(placeholder)
                 .transform(new RoundedCornersTransformation(25, 0))
                 .error(R.drawable.flicks_movie_placeholder)
                 .into(holder.ivPosterImage);
@@ -90,7 +108,7 @@ public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ViewHolder>{
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ivPosterImage =(ImageView) itemView.findViewById(R.id.posterImage);
+            ivPosterImage =(ImageView) itemView.findViewById(R.id.landscapeImage);
             tvOverview = (TextView) itemView.findViewById(R.id.MovieOverview);
             tvTitle = (TextView) itemView.findViewById(R.id.MovieTitle);
 

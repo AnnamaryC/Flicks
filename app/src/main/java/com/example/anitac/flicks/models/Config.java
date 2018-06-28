@@ -11,6 +11,8 @@ import org.json.JSONObject;
 public class Config {
     String imageBaseUrl; //showing images
     String posterSize; //fetch poster size
+    String backdropSize; //fetch backdrop size
+
 
     public Config(JSONObject object) throws JSONException {
         JSONObject images = object.getJSONObject("images");
@@ -21,6 +23,14 @@ public class Config {
         //get poster size
         JSONArray posterSizeOptions = images.getJSONArray("poster_sizes")  ;
         posterSize = posterSizeOptions.optString(3, "w342")  ;
+
+        //get backdrop size
+        JSONArray BackdropSizeOptions = images.getJSONArray("backdrop_sizes")  ;
+        backdropSize = posterSizeOptions.optString(3, "w780")  ;
+    }
+
+    public String getBackdropSize() {
+        return backdropSize;
     }
 
     //helper method to construct url

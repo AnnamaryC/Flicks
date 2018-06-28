@@ -11,6 +11,7 @@ public class MovieData {
     private String title;
     private String overview;
     private String posterPath; //not full url, just path
+    private String backdropPath;
 
 
     public MovieData(JSONObject object){
@@ -18,6 +19,7 @@ public class MovieData {
             title = object.getString("title");
             overview = object.getString("overview");
             posterPath = object.getString("poster_path");
+            backdropPath = object.getString("backdrop_path");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -26,6 +28,10 @@ public class MovieData {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
     public String getOverview() {
