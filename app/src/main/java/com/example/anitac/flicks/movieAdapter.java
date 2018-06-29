@@ -1,7 +1,9 @@
 package com.example.anitac.flicks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Movie;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import com.example.anitac.flicks.models.Config;
 import com.example.anitac.flicks.models.GlideApp;
 import com.example.anitac.flicks.models.MovieData;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -100,7 +104,7 @@ public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ViewHolder>{
     }
 
     //create view holder as static inner class
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView ivPosterImage;
         TextView tvTitle;
@@ -111,9 +115,24 @@ public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ViewHolder>{
             ivPosterImage =(ImageView) itemView.findViewById(R.id.landscapeImage);
             tvOverview = (TextView) itemView.findViewById(R.id.MovieOverview);
             tvTitle = (TextView) itemView.findViewById(R.id.MovieTitle);
+            itemView.setOnClickListener(this);
 
         }
-    }{
 
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position, this won't work if the class is static
+                MovieData movie = movies.get(position);
+                // create intent for the new activity
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+                // serialize the movie using parceler, use its short name as a key
+                intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
+                // show the activity
+                context.startActivity(intent);
+            }
+        }
     }
 }

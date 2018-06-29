@@ -41,6 +41,7 @@ public class MovieListActivity extends AppCompatActivity {
     Config config;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,7 @@ public class MovieListActivity extends AppCompatActivity {
         rvMovies = (RecyclerView) findViewById(R.id.MovieList);
         rvMovies.setLayoutManager(new LinearLayoutManager(this));
         rvMovies.setAdapter(adapter);
+
 
         //get the configuration
         GetConfiguration();
