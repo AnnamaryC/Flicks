@@ -7,6 +7,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/MovieList"
         android:layout_width="593dp"
-        android:layout_height="495dp" />
+        android:layout_height="495dp"
+        android:background="@android:color/black" />
 
 </android.support.constraint.ConstraintLayout>
