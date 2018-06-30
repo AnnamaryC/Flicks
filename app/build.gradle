@@ -19,23 +19,32 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     //added to use internet and async, loading pages, success or fail
-    implementation 'com.github.bumptech.glide:glide:4.7.1' //glide addition
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    //glide addition
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-    implementation 'jp.wasabeef:glide-transformations:3.3.0'//glide transformations
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
+    //glide transformations
     // If you want to use the GPU Filters
-    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1' //glide transformation
-    implementation 'org.parceler:parceler-api:1.1.6' //add movie info on seperate activiy
-    annotationProcessor 'org.parceler:parceler:1.1.6' //add movie info on seperate activity
-    implementation 'com.jakewharton:butterknife:8.4.0' //butterknife
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0' //butterknife
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+    //glide transformation
+    implementation 'org.parceler:parceler-api:1.1.6'
+    //add movie info on seperate activiy
+    annotationProcessor 'org.parceler:parceler:1.1.6'
+    //add movie info on seperate activity
+    implementation 'com.jakewharton:butterknife:8.4.0'
+    //butterknife
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    //butterknife
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+    //recycler view
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
