@@ -21,12 +21,12 @@ public class Config {
         imageBaseUrl = images.getString("secure_base_url");
 
         //get poster size
-        JSONArray posterSizeOptions = images.getJSONArray("poster_sizes")  ;
-        posterSize = posterSizeOptions.optString(3, "w342")  ;
+        JSONArray posterSizeOptions = images.getJSONArray("poster_sizes");
+        posterSize = posterSizeOptions.optString(3, "w342");
 
         //get backdrop size
-        JSONArray BackdropSizeOptions = images.getJSONArray("backdrop_sizes")  ;
-        backdropSize = posterSizeOptions.optString(3, "w780")  ;
+        JSONArray BackdropSizeOptions = images.getJSONArray("backdrop_sizes");
+        backdropSize = posterSizeOptions.optString(3, "w780");
     }
 
     public String getBackdropSize() {
